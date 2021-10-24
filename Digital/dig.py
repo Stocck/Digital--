@@ -32,14 +32,32 @@ class Nota:
         'w3': [img['right'], img['right_pushed']],
         'b1': [img['black'], img['black_pushed']]
     }
+    name_ql = {
+        'EQUAL' : '=',
+        'BRACKETLEFT': '[',
+        'BRACKETRIGHT' : ']'
+    }
 
     def __init__(self, sound, class_nota, but, x, y):
-        self.but = but
+        if but in self.name_ql:
+            self.but = self.name_ql[but]
+        else:
+            self.but = but
+
         self.class_nota = class_nota
         self.sprite = [pg.sprite.Sprite(i) for i in self.class_Nota[class_nota]]
         for i in range(len(self.sprite)):
             self.sprite[i].x = x
             self.sprite[i].y = y
+
+        if class_nota != 'b1':
+            self.label = pg.text.Label(self.but, font_name='Calibri',
+                                   font_size=8*scale_x, x=x+2.5*scale_x+margin,
+                                   y=12*scale_y,color=[255, 0, 0, 255])
+        else:
+            self.label = pg.text.Label(self.but[-1], font_name='Calibri',
+                                       font_size=8 * scale_x, x=x + 5 * scale_x+margin,
+                                       y= self.sprite[0].height * (1-54/82) + 15 * scale_y, color=[255, 0, 0, 255])
 
         self.sound = song[sound]
         self.push = 0
@@ -125,6 +143,7 @@ def on_draw():
     fps.draw()
     for i in button.values():
         i.sprite[i.push].draw()
+        i.label.draw()
 
 
 @win.event
