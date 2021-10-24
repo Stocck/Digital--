@@ -6,7 +6,7 @@ pg.resource.path = ['./img']
 pg.resource.reindex()
 
 img_list = list(os.walk('./img'))[0][2]
-print(img_list)
+#print(img_list)
 for i in img_list:
     if i[i.rfind('.') + 1:] in ['psd', 'zip', 'txt']:
         img_list.pop(img_list.index(i))
@@ -16,13 +16,13 @@ img = {i[:i.rfind('.')]: pg.resource.image(i) for i in img_list}
 pg.resource.path = ['./img/not\'s']
 pg.resource.reindex()
 song = list(os.walk('./img/not\'s'))[0][2]
-print(song)
+#print(song)
 for i in song:
     if i[i.rfind('.') + 1:] not in ['mp3']:
         song.pop(song.index(i))
 
 song = {i[i[:i.rfind('.')].rfind('.') + 1:i.rfind('.')]: pg.resource.media(i) for i in song}
-print(*[i + '\n' for i in song.keys()])
+#print(*[i + '\n' for i in song.keys()])
 
 
 class Nota:
@@ -131,11 +131,18 @@ def on_draw():
 def on_key_press(symbol, modifiers):
     win.push_handlers(keyboard)
     for key1, val in keyboard.items():
-        if key1 == key.T:
-            print(keyboard)
+        #if key1 == key.T:
+            #print(keyboard)
         if val and key.symbol_string(key1) in button:
             if key.symbol_string(key1) and button[key.symbol_string(key1)].push == 0:
                 button[key.symbol_string(key1)].play()
+        elif val and key1 in [949187772416, 940597837824]:
+            if key1 == 940597837824:
+                k = 91
+            else:
+                k = 93
+            if button[key.symbol_string(k)].push == 0:
+                button[key.symbol_string(k)].play()
 
 
 @win.event
@@ -145,6 +152,13 @@ def on_key_release(symbol, modifiers):
         if not val and key.symbol_string(key1) in button:
             if key.symbol_string(key1) and button[key.symbol_string(key1)].push == 1:
                 button[key.symbol_string(key1)].stop()
+        elif not val and key1 in [949187772416, 940597837824]:
+            if key1 == 940597837824:
+                k = 91
+            else:
+                k = 93
+            if button[key.symbol_string(k)].push == 1:
+                button[key.symbol_string(k)].stop()
 
 @win.event
 def on_mouse_press(x, y, but, modifiers):
